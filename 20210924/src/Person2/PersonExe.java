@@ -10,11 +10,19 @@ public class PersonExe
 	}
 	
 	public static PersonExe getInstance() {
-		System.out.println("####");
 		return singleton;
 	}
 	
 	public void execute() {
+		
+		arrayPerson[0] = new Person("홍길동",Gender.MAN, "1234-1234");
+		arrayPerson[1] = new Person("김길동",Gender.MAN, "1234-4321");
+		arrayPerson[2] = new Person("최길동",Gender.WOMAN, "1234-5678");
+		arrayPerson[3] = new Person("김수진",Gender.WOMAN, "8765-4312");
+		arrayPerson[4] = new Student("송승엽",Gender.MAN, "1234-0000", "컴공과");
+		arrayPerson[5] = new Student("김철수",Gender.MAN, "0000-4321", "수학과");
+		arrayPerson[6] = new Worker("엽승송", Gender.WOMAN, "9876-5432", "예담");
+		
 		while(true) {
 			System.out.println("[ Person 관리 시스템 ] - - - - - - - - - - - ");
 			System.out.println("1.등록 2. 조회 3. 수정 4. 삭제 5. 종료");
@@ -37,17 +45,18 @@ public class PersonExe
 				System.out.println("종료하겠습니다.");
 				break;
 			}
+			System.out.println();
 		}
 	}
 	
 	public void remove() {
-		System.out.println("[ 친구목록 ]= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =");
+		System.out.println("[ People 목록 ]= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =");
 		for(int i = 0 ; i < arrayPerson.length; i++) {
 			if(arrayPerson[i] == null) continue;
 			
 			System.out.println("[" + i + "] " + arrayPerson[i].toString());
 		}
-		System.out.println("= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =");
+		System.out.println("= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =");
 		
 		int Select = Scanutil.readInt("삭제하려는 Person의 번호를 입력하세요");
 		if(arrayPerson[Select] == null) {
@@ -104,13 +113,31 @@ public class PersonExe
 	
 	public void showList() {
 		String Name = Scanutil.readStr("조회할 이름을 입력하세요");
-		int Gend = Scanutil.readInt("조회할 Person의 성별이 남자라면 '0'번을, 여자라면 '1'번을 입력하세요");
-		Gender gender = Gend == 0 ? Gender.MAN : Gender.WOMAN;
+		String Str_Gend = null;
+		int Gend;
+		Gender gender = null;
+
+		while(true) {
+			Str_Gend = Scanutil.readStr("조회할 Person의 성별이 남자라면 '0'번을, 여자라면 '1'번을 입력하세요");
+			if(Str_Gend.equals("")) {
+				System.out.println("* 성별을 입력하지 않으셨습니다. *");
+			} else if(Str_Gend.equals("0")  || Str_Gend.equals("1") ) {
+				 Gend = Integer.parseInt(Str_Gend);
+				 gender = Gend == 0 ? Gender.MAN : Gender.WOMAN;
+				break;
+			} else {
+				System.out.println("잘못된 입력입니다. 다시 입력해주세요.");
+			}
+		}
+		
 		boolean Flag = false;
 		System.out.println("[ 조회결과 ] = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =");
 		for(int i = 0 ; i < arrayPerson.length; i++) {
 			if(arrayPerson[i] == null) continue;
 			
+			if(Name.equals("") && Str_Gend.equals("")) {
+				System.out.println();
+			}
 			if(arrayPerson[i].getName().indexOf(Name) != -1 && arrayPerson[i].getGender() == gender) {
 				Flag = true;
 				if(arrayPerson[i] instanceof Person) {
